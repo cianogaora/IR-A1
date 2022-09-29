@@ -19,7 +19,6 @@ import java.util.Objects;
 public class App 
 {
     private static final String INDEX_DIRECTORY = "../index";
-
     public static void process(File file, IndexWriter iwriter) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st = "";
