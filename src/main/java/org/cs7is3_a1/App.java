@@ -86,14 +86,24 @@ public class App
         StandardAnalyzer analyzer = new StandardAnalyzer();
 
         ArrayList <String> queries = getQueries();
-        Query query = new QueryParser("text", analyzer).parse(queries.get(0));
+        ArrayList <Query> parsedQueries = new ArrayList<>();
+
+        QueryParser qp = new QueryParser("text", analyzer);
+        Query query;
+        for(int i = 0; i < queries.size(); i++){
+            query = qp.parse(queries.get(i));
+            parsedQueries.add(i, query);
+        }
+
 
         int hitsPerPage = 10;
-        TopDocs docs = isearcher.search(query, hitsPerPage);
+        int idx = 0;
+        TopDocs docs = isearcher.search(parsedQueries.get(idx), hitsPerPage);
         ScoreDoc[] hits = docs.scoreDocs;
 
         System.out.println("Found " + hits.length + " hits.");
-        for(int i=0;i<hits.length;++i) {
+        System.out.println("Query: " + queries.get(idx));
+        for(int i=0; i < hits.length; i++) {
             int docId = hits[i].doc;
             Document d = isearcher.doc(docId);
             System.out.println((i + 1) + ". " + d.get("id") + "\t" + hits[i].score + " \t" + d.get("title"));
